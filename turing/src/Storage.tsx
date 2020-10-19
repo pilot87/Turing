@@ -23,6 +23,24 @@ export interface Rule {
     move: string;
 }
 
+export interface Program {
+    name: string,
+    tapes: {tapes: Tape[], state: number},
+    rules: Rule[],
+    states: State[],
+    symbols: Symbol[]
+}
+
+export interface Session {
+    name: string,
+    machine: {tapes: Tape[], state: number}[],
+    rules: Rule[],
+    states: State[],
+    symbols: Symbol[],
+    history_pos: number,
+    run_mode: boolean
+}
+
 const lodashClonedeep = require('lodash/cloneDeep');
 
 export class LocalState {
@@ -31,10 +49,99 @@ export class LocalState {
     @observable states: State[];
     @observable symbols: Symbol[];
     @observable table: Array<Array<Rule | null>[] | null>;
-    //@observable history_tapes: {tapes: Tape[], state: number }[];
     @observable history_pos: number;
-    @observable block_input: boolean;
-    @observable block_test: boolean;
+    @observable run_mode: boolean;
+    @observable programs: Array< Program | Session >;
+    @observable possible_name: string;
+
+    handlePossible_name = (e: any) => {
+        this.possible_name = e.target.value;
+    }
+
+    removeprogram = (i: number) => {
+        this.programs.splice(i, 1);
+    }
+
+    machineFromstart = () => {
+        if (this.possible_name !== 'Input name here') {
+            this.programs.push({
+                name: lodashClonedeep(this.possible_name),
+                tapes: lodashClonedeep(this.machine[0]),
+                rules: lodashClonedeep(this.rules),
+                states: lodashClonedeep(this.states),
+                symbols: lodashClonedeep(this.symbols)
+            });
+            this.possible_name = 'Input name here';
+        }
+    }
+
+    machineFromactual = () => {
+        if (this.possible_name !== 'Input name here') {
+            this.programs.push({
+                name: lodashClonedeep(this.possible_name),
+                tapes: lodashClonedeep(this.machine[this.history_pos]),
+                rules: lodashClonedeep(this.rules),
+                states: lodashClonedeep(this.states),
+                symbols: lodashClonedeep(this.symbols)
+            });
+            this.possible_name = 'Input name here';
+        }
+    }
+
+    sessionFromstate = () => {
+        if (this.possible_name !== 'Input name here') {
+            this.programs.push({
+                name: lodashClonedeep(this.possible_name),
+                machine: lodashClonedeep(this.machine),
+                rules: lodashClonedeep(this.rules),
+                states: lodashClonedeep(this.states),
+                symbols: lodashClonedeep(this.symbols),
+                history_pos: lodashClonedeep(this.history_pos),
+                run_mode: lodashClonedeep(this.run_mode)
+            });
+            this.possible_name = 'Input name here';
+        }
+    }
+
+    cleaninput = () => {
+        if (this.possible_name === 'Input name here') {
+            this.possible_name = '';
+        }
+    }
+
+    blurinput = () => {
+        if (this.possible_name === '') {
+            this.possible_name = 'Input name here';
+        }
+    }
+
+    handleLoadmachine = (i: number) => {
+        const mach = lodashClonedeep(this.programs[i]);
+        while (this.machine.length > 0) {
+            this.machine.pop();
+        }
+        while (this.rules.length > 0) {
+            this.rules.pop();
+        }
+        while (this.states.length > 0) {
+            this.states.pop();
+        }
+        while (this.symbols.length > 0) {
+            this.symbols.pop();
+        }
+        mach.rules.forEach((rule: Rule) => this.rules.push(rule));
+        mach.states.forEach((st: State) => this.states.push(st));
+        mach.symbols.forEach((sym: Symbol) => this.symbols.push(sym));
+        if ( 'run_mode' in mach) {
+            mach.machine.forEach((tapes: {tapes: Tape[], state: number}) => this.machine.push(tapes));
+            this.history_pos = mach.history_pos;
+            this.run_mode = mach.run_mode;
+        } else {
+            this.machine.push(mach.tapes);
+            this.history_pos = 0;
+            this.run_mode = false;
+        }
+    }
 
     sync = () => {
         this.table[0] = this.symbols.map((sym: Symbol, symbol_ind: number) => {
@@ -47,13 +154,11 @@ export class LocalState {
     }
 
     handleInputmode = () => {
-        this.block_input = false;
-        this.block_test = true;
+        this.run_mode = false;
     }
 
     handleTestmode = () => {
-        this.block_input = true;
-        this.block_test = false;
+        this.run_mode = true;
     }
 
     handleTapehistory = (i: number) => {
@@ -355,7 +460,8 @@ export class LocalState {
         this.table = [null];
         this.sync();
         this.history_pos = 0;
-        this.block_test = true;
-        this.block_input = false;
+        this.run_mode = false;
+        this.programs = [];
+        this.possible_name = 'Input name here';
     }
 }

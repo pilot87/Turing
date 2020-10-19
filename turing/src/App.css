@@ -25,6 +25,7 @@
   float: left;
   padding: 15px;
   border: none;
+  margin-bottom: 10px;
 }
 
 .elements:after {
@@ -82,7 +83,26 @@ p.simple {
   font-size: 16px;
 }
 
+.mini-btn-group {
+  margin-top: 10px;
+  border: none;
+}
+
+.mini-btn-group p {
+  border: none; /* Green border */
+  padding: 1px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  width: 100%; /* Set a width if needed */
+  display: block; /* Make the buttons appear below each other */
+  font-Size: 90%;
+  margin-top: 10px;
+}
+
 .btn-group button:not(:last-child) {
+  border-bottom: none; /* Prevent double borders */
+}
+
+.mini-btn-group p:not(:last-child) {
   border-bottom: none; /* Prevent double borders */
 }
 

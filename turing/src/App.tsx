@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {observer} from "mobx-react";
-import { LocalState, Rule, State, Symbol, Tape} from "./Storage";
+import { LocalState, Rule, State, Symbol, Tape, Program, Session} from "./Storage";
 import './App.css';
 
 const LocalStateContext = React.createContext(null);
@@ -13,7 +13,7 @@ const Frame = observer((props: {fr: number, ind: number, color: string, ind2: nu
     }, [])
 
     return (<input onChange={handleFrameChange} className="frame" style={{background : props.color, color: 'black'}}
-                   value={state.symbols[props.fr].name} disabled={state.block_input}/>);
+                   value={state.symbols[props.fr].name} disabled={state.run_mode}/>);
 })
 
 const Tapes = observer(() => {
@@ -42,7 +42,7 @@ const Tapes = observer(() => {
         <ul className="tape-group" >
             {cont}
             <p style={{margin: '50px', border: 'none'}}>{'Current state: ' +
-                state.states[state.machine[state.history_pos].state].name}</p>
+            state.states[state.machine[state.history_pos].state].name}</p>
         </ul>
     );
 })
@@ -68,17 +68,17 @@ const Controls = observer( () => {
 
     return (
         <a><ul className='controls'>
-            <button onClick={handleTapeBack} disabled={state.block_test}>Back</button>
-            <button onClick={handleStep} disabled={state.block_test}>Step</button>
+            <button onClick={handleTapeBack} disabled={!state.run_mode}>Back</button>
+            <button onClick={handleStep} disabled={!state.run_mode}>Step</button>
         </ul>
-        <ul className='controls'>
-            <button onClick={handleInputMode} style={{background: state.block_test ?
-                    'rgb(200, 235, 200)' : '#ffdcdc', border: state.block_test ? '1px solid black' : 'none'}}
-            >Input mode</button>
-            <button onClick={handleTestMode} style={{background: state.block_test ?
-                    '#ffdcdc' : 'rgb(200, 235, 200)', border: !state.block_test ? '1px solid black' : 'none'}}
-            >Test mode</button>
-        </ul></a>
+            <ul className='controls'>
+                <button onClick={handleInputMode} style={{background: !state.run_mode ?
+                        'rgb(200, 235, 200)' : '#ffdcdc', border: !state.run_mode ? '2px solid black' : 'none'}}
+                >Input mode</button>
+                <button onClick={handleTestMode} style={{background: !state.run_mode ?
+                        '#ffdcdc' : 'rgb(200, 235, 200)', border: state.run_mode ? '2px solid black' : 'none'}}
+                >Test mode</button>
+            </ul></a>
     )
 })
 
@@ -104,19 +104,19 @@ const OneSymbol = observer((props: { sym: Symbol, index: number }) => {
         state.machine[state.history_pos].tapes[0].tape.filter((frame: number) => frame === props.index).length === 0) {
         desc = <a>
             <input type="text" className="a" value={props.sym.description} style={{width: '60%'}}
-                   onChange={handleSymbolDescChange}  disabled={state.block_input}/>
+                   onChange={handleSymbolDescChange}  disabled={state.run_mode}/>
             <button style={{width: '20%', background: '#ffdcdc', border: 'none'}} onClick={handleRemoveSymbol}
-                    disabled={state.block_input}>Remove unused symbol</button>
+                    disabled={state.run_mode}>Remove unused symbol</button>
         </a>
     } else {
         desc = <a><input type="text" className="a" value={props.sym.description} style={{width: '80%'}}
-                         onChange={handleSymbolDescChange}  disabled={state.block_input}/></a>
+                         onChange={handleSymbolDescChange}  disabled={state.run_mode}/></a>
     }
 
     return (
         <div>
             <input className="state" value={props.sym.name} style={{width: '15%'}}
-                   onChange={handleSymbolNameChange} disabled={state.block_input}/>
+                   onChange={handleSymbolNameChange} disabled={state.run_mode}/>
             {desc}
         </div>
     );
@@ -165,26 +165,26 @@ const OneState = observer( (props: {st: State, index: number}) => {
         state.rules.filter((rule: Rule) => rule.new_state === props.index).length === 0) {
         desc = <a>
             <input type="text" className="a" value={props.st.description} style={{width: '65%'}}
-                   onChange={handleStateDescChange}  disabled={state.block_input}/>
+                   onChange={handleStateDescChange}  disabled={state.run_mode}/>
             <button style={{width: '15%', background: '#ffdcdc', border: 'none'}} onClick={handleRemoveState}
-                    disabled={state.block_input}>Remove unused state</button>
+                    disabled={state.run_mode}>Remove unused state</button>
         </a>
     } else if (state.rules.filter((rule: Rule) => rule.new_state === props.index).length > 0 &&
         state.rules.filter((rule: Rule) => rule.state === props.index).length == 0) {
         desc = <a>
             <input type="text" className="a" value={props.st.description} style={{width: '70%'}}
-                   onChange={handleStateDescChange} disabled={state.block_input}/>
+                   onChange={handleStateDescChange} disabled={state.run_mode}/>
             <a style={{width: '10%', background: '#D0D0D0', border: 'none'}}>Terminate state</a>
         </a>
     } else {
         desc = <a><input type="text" className="a" value={props.st.description} style={{width: '80%'}}
-                         onChange={handleStateDescChange} disabled={state.block_input}/></a>
+                         onChange={handleStateDescChange} disabled={state.run_mode}/></a>
     }
 
     return (
         <div>
             <input className="state" value={props.st.name} style={{width: '15%'}}
-                   onChange={handleStateNameChange} disabled={state.block_input}/>
+                   onChange={handleStateNameChange} disabled={state.run_mode}/>
             {desc}
         </div>
     );
@@ -207,9 +207,9 @@ const States = observer(() => {
         <ul className="states-group"  >
             <div>
                 <input className="state" value='State' style={{width: '15%', background: '#D0D0D0'}}
-                       disabled={state.block_input}/>
+                       disabled={state.run_mode}/>
                 <input type="text" className="a" value='Description' style={{width: '80%', background: '#D0D0D0'}}
-                       disabled={state.block_input}/>
+                       disabled={state.run_mode}/>
             </div>
             {cont}
         </ul>
@@ -266,7 +266,7 @@ const OneRule = observer((props: {rule: Rule, index?: number}) => {
                 <a style={{color: '#585858', background: 'rgb(200, 235, 200)'}}>State:&nbsp;</a>
                 <input type="text" style={{color: 'black', background: 'white', border: 'none'}}
                        size={state_text.length + 1} value={state_text} onChange={handleRuleStateChange}
-                       disabled={state.block_input}/>
+                       disabled={state.run_mode}/>
             </p>
             {props.rule.symbols.map(
                 (sym: number, tape: number) => {
@@ -276,7 +276,7 @@ const OneRule = observer((props: {rule: Rule, index?: number}) => {
                             <a style={{color: '#555555', background: 'rgb(243, 238, 170)'}}>Symbol:&nbsp;</a>
                             <input type="text" style={{color: 'black', background: 'white', border: 'none'}}
                                    size={symbol_text.length + 1} value={symbol_text} onChange={handleRuleSymbolChange}
-                                   disabled={state.block_input}/>
+                                   disabled={state.run_mode}/>
                         </p>
                     )
                 }
@@ -286,7 +286,7 @@ const OneRule = observer((props: {rule: Rule, index?: number}) => {
                 <a style={{color: '#585858', background: 'rgb(200, 235, 200)'}}>Move:&nbsp;</a>
                 <input type="text" style={{color: 'black', background: 'white', border: 'none'}}
                        size={1} value={props.rule.move} onChange={handleRuleMoveChange}
-                       onFocus={handleRuleMoveFocus} disabled={state.block_input}/>
+                       onFocus={handleRuleMoveFocus} disabled={state.run_mode}/>
             </p>
             <br/>
             <p style={{float: 'left'}}>
@@ -294,7 +294,7 @@ const OneRule = observer((props: {rule: Rule, index?: number}) => {
                 <a style={{color: '#585858', background: 'rgb(200, 235, 200)'}}>New state:&nbsp;</a>
                 <input type="text" style={{color: 'black', background: 'white', border: 'none'}}
                        size={new_state_text.length + 1} value={new_state_text} onChange={handleRuleNew_StateChange}
-                       disabled={state.block_input}/>
+                       disabled={state.run_mode}/>
             </p>
             {props.rule.new_symbols.map(
                 (sym: number, tape: number) => {
@@ -304,13 +304,13 @@ const OneRule = observer((props: {rule: Rule, index?: number}) => {
                             <a style={{color: '#555555', background: 'rgb(243, 238, 170)'}}>New symbol:&nbsp;</a>
                             <input type="text" style={{color: 'black', background: 'white', border: 'none'}}
                                    size={new_symbol_text.length + 1} value={new_symbol_text}
-                                   onChange={handleRuleNew_SymbolChange} disabled={state.block_input}/>
+                                   onChange={handleRuleNew_SymbolChange} disabled={state.run_mode}/>
                         </p>
                     )
                 }
             )}
             <button style={{border: 'none', background: '#ffdcdc'}} onClick={handleRemoveRule}
-                    disabled={state.block_input}>Remove rule</button>
+                    disabled={state.run_mode}>Remove rule</button>
         </div>
     );
 })
@@ -334,8 +334,8 @@ const Rules = observer(() => {
             )
         }
     )
-    cont.push(<button onClick={handleAddRule} disabled={state.block_input}
-        style={{border: 'none', background: '#D0D0D0', padding: '10px', margin: '5px'}}>
+    cont.push(<button onClick={handleAddRule} disabled={state.run_mode}
+                      style={{border: 'none', background: '#D0D0D0', padding: '10px', margin: '5px'}}>
         <p style={{margin: '5px'}}>Add</p><p style={{margin: '5px'}}>rule</p></button>);
 
     return (
@@ -391,8 +391,8 @@ function Row(props: { index: number, active: boolean }) {
         state.handleTapehistory(props.index);
     }, [])
     return (
-        <button className="row" onClick={handleTapeHistory} disabled={state.block_test}
-        style={{background: props.active ? '#c8ebc8':'#F1F1F1'}}>
+        <button className="row" onClick={handleTapeHistory} disabled={!state.run_mode}
+                style={{background: props.active ? '#c8ebc8':'#F1F1F1'}}>
             {'Step ' + props.index}
         </button>
     );
@@ -418,6 +418,60 @@ const History = observer(() => {
     );
 })
 
+const Prog = observer((props: {pr: Program | Session, i: number}) => {
+    const state: LocalState = useContext(LocalStateContext);
+
+    const handleLoadMachine = useCallback(() => {state.handleLoadmachine(props.i)}, []);
+    const removeProgram = useCallback(() => {state.removeprogram(props.i)}, []);
+
+    return (
+        <p>
+            <button style={{width: '60%', border: 'none'}} onClick={handleLoadMachine}>{props.pr.name}</button>
+            <button style={{width: '40%', background: '#ffdcdc', border: 'none'}}
+                    onClick={removeProgram}>remove</button>
+        </p>
+    )
+})
+
+const Programs = observer(() => {
+    const state: LocalState = useContext(LocalStateContext);
+
+    const cont = state.programs.map(
+        (prog: Program | Session, ind: number) => {
+            return (
+                <Prog
+                    pr={prog}
+                    i={ind}
+                />
+            )
+        }
+    )
+
+    const machineFromStart = useCallback(() => {state.machineFromstart()}, []);
+    const machineFromActual = useCallback(() => {state.machineFromactual()}, []);
+    const sessionFromState = useCallback(() => {state.sessionFromstate()}, []);
+    const handlePossible_Name = useCallback((e) => {state.handlePossible_name(e)}, []);
+    const cleanInput = useCallback(() => {state.cleaninput()}, []);
+    const blurInput = useCallback(() => {state.blurinput()}, []);
+
+    return (
+        <ul className="mini-btn-group" style={{display: 'block'}} >
+            <button style={{height: '40px', background: 'none', border: 'none'}}/>
+            {cont}
+            <input style={{marginTop: '0', marginBottom: '20px', fontStyle: state.possible_name ===
+                'Input name here' ? 'italic' : 'normal', color: state.possible_name === 'Input name here' ?
+                    'gray' : 'black'}} value={state.possible_name}
+            onChange={handlePossible_Name} onFocus={cleanInput} onBlur={blurInput}/>
+            <button style={{border: 'none', fontSize: '90%', padding: '2px', width: '100%', background: '#D0D0D0'}}
+                    onClick={machineFromStart}>Program from current state</button>
+            <button style={{border: 'none', fontSize: '90%', padding: '2px', width: '100%', marginTop: '10px',
+                background: '#D0D0D0'}} onClick={machineFromActual}>Program from initial state</button>
+            <button style={{border: 'none', fontSize: '90%', padding: '2px', width: '100%', marginTop: '10px',
+                background: '#D0D0D0'}} onClick={sessionFromState}>Save current session</button>
+        </ul>
+    )
+})
+
 const App = observer( () => {
     const [state] = useState(() => new LocalState());
 
@@ -427,26 +481,27 @@ const App = observer( () => {
         <div className="App">
             <LocalStateContext.Provider value={state}>
                 <div className='header'>
-                <h3>
-                    Turing machine
-                </h3>
+                    <h3>
+                        Turing machine
+                    </h3>
                 </div>
 
-                    <div className="elements">
-                        <div className="main">
-                            <Tapes/>
-                            <Controls/>
-                            <Symbols/>
-                            <States/>
-                            <Rules/>
-                        </div>
-                        <div className="history">
-                            <History/>
-                        </div>
+                <div className="elements">
+                    <div className="main">
+                        <Tapes/>
+                        <Controls/>
+                        <Symbols/>
+                        <States/>
+                        <Rules/>
                     </div>
-                    <div className="table">
-                        <Table/>
+                    <div className="history">
+                        <History/>
+                        <Programs/>
                     </div>
+                </div>
+                <div className="table">
+                    <Table/>
+                </div>
             </LocalStateContext.Provider>
         </div>
     );
