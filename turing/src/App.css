@@ -1,0 +1,175 @@
+* {
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight: normal;
+}
+
+.header {
+  background-color: #F1F1F1;
+  text-align: center;
+  padding: 0;
+  font-size: 1.6em;
+  font-style: normal;
+  font-weight: normal;
+  height: min-content;
+}
+
+.main {
+  width: 80%;
+  float: left;
+  border: none;
+  padding: 0;
+}
+
+.history {
+  width: 20%;
+  float: left;
+  padding: 15px;
+  border: none;
+}
+
+.elements:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.frame {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: 0px;
+  margin-top: 0px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+p.LIT {font-size: 1.5em;}
+
+table, th, td {
+  margin-left: 2.5%;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 5px;
+  text-align: left;
+  font-weight: normal;
+}
+
+p.simple {
+  margin-left: 2.5%;
+}
+
+#div1 {
+  width: 350px;
+  height: 70px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+}
+
+.btn-group button {
+  border: 1px solid gray; /* Green border */
+  padding: 7px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  width: 80%; /* Set a width if needed */
+  display: block; /* Make the buttons appear below each other */
+  font-size: 16px;
+}
+
+.btn-group button:not(:last-child) {
+  border-bottom: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #3e8e41;
+}
+
+.rules-group {
+  border: none;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.rule_container {
+  padding: 5px;
+  float: left;
+}
+
+.rule {
+  background: #D0D0D0;
+  padding-top: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.rule > * {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.table {
+  padding: 10px;
+  text-align: center;
+  border: 2px;
+}
+
+.states-group {
+  border: none; /* Green border */
+  padding-top: 15px; /* Some padding */
+  padding-bottom: 15px;
+  display: block; /* Make the buttons appear below each other */
+  font-size: 16px;
+  float: left;
+  width: 100%;
+}
+
+.row {
+  border: none; /* Green border */
+  padding-top: 15px; /* Some padding */
+  padding-bottom: 15px;
+  cursor: pointer;
+  font-size: 16px;
+  float: left;
+  display: block;
+}
+
+.rules-group input {
+  padding-right: 10px;
+}
+
+.tape-group {
+  border: none; /* Green border */
+  padding-top: 0; /* Some padding */
+  padding-bottom: 0;
+  padding-left: 0;
+  display: block; /* Make the buttons appear below each other */
+  font-size: 16px;
+  float: left;
+  width: 100%;
+}
+.tape {
+  border: none; /* Green border */
+  padding-top: 15px; /* Some padding */
+  padding-bottom: 15px;
+  display: block; /* Make the buttons appear below each other */
+  font-size: 16px;
+  float: left;
+  width: 100%;
+}
+
+li {
+  float: left;
+}
+
+ul {
+  list-style-type: none;
+}
