@@ -17,7 +17,7 @@ const Frame = observer((props: {fr: number, ind: number, color: string, ind2: nu
 })
 
 const Tapes = observer(() => {
-    const state = useContext(LocalStateContext);
+    const state: LocalState = useContext(LocalStateContext);
     const cont = state.machine[state.history_pos].tapes.map(
         (bobbin: Tape, index1: number) => {
             return (
@@ -38,12 +38,19 @@ const Tapes = observer(() => {
             );
         }
     );
+    const handleChangePos = useCallback((e: any) => {
+        state.handleChangepos(e);
+    }, []);
     return (
         <ul className="tape-group" >
             <h3 style={{paddingLeft: '45px', fontSize: '110%'}}>Tape</h3>
             {cont}
-            <p style={{margin: '50px', border: 'none'}}>{'Current state: ' +
+            <p style={{marginLeft: '50px', marginBottom: '10px', border: 'none'}}>{'Current state: ' +
             state.states[state.machine[state.history_pos].state].name}</p>
+            <p style={{marginLeft: '50px', marginTop: '0', border: 'none'}}>
+                <a>Current position:&nbsp;</a>
+                <input value={state.machine[0].tapes[0].pos} onChange={handleChangePos}/>
+            </p>
         </ul>
     );
 })

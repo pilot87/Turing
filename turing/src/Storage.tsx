@@ -54,6 +54,14 @@ export class LocalState {
     @observable programs: Array< Program | Session >;
     @observable possible_name: string;
 
+    handleChangepos = (e: any) => {
+        if (!isNaN(e.target.value)) {
+            const pos: number = parseInt(e.target.value);
+            if (pos < this.machine[0].tapes[0].tape.length) {
+                this.machine[0].tapes[0].pos = pos
+            }
+        }
+    }
     handlePossible_name = (e: any) => {
         this.possible_name = e.target.value;
     }
@@ -196,6 +204,7 @@ export class LocalState {
                 });
                 this.symbols.splice(old, 1);
         }
+        while (this.align()) {}
     }
 
     handleRemoverule = (i: number) => {
@@ -273,16 +282,16 @@ export class LocalState {
     }
 
     align = () => {
-        let r = 0;
+        let r: boolean = false;
         this.machine[this.history_pos].tapes = this.machine[this.history_pos].tapes.map( (bobbin: Tape) => {
             if(bobbin.tape[0] === 0 && bobbin.tape[1] === 0 && bobbin.tape[2] === 0) {
                 bobbin.tape.shift();
                 bobbin.pos--;
-                r = 1;
+                r = true;
             } else if(bobbin.tape[0] !== 0 || bobbin.tape[1] !== 0) {
                 bobbin.tape.unshift(0);
                 bobbin.pos++;
-                r = 1;
+                r = true;
             }
             return bobbin;
         })
@@ -290,10 +299,10 @@ export class LocalState {
             if(bobbin.tape[bobbin.tape.length - 3] === 0 && bobbin.tape[bobbin.tape.length - 2] === 0 &&
                 bobbin.tape[bobbin.tape.length - 1] === 0) {
                 bobbin.tape.pop();
-                r = 1;
+                r = true;
             } else if(bobbin.tape[bobbin.tape.length - 2] !== 0 || bobbin.tape[bobbin.tape.length - 1] !== 0) {
                 bobbin.tape.push(0);
-                r = 1;
+                r = true;
             }
             return bobbin;
         })
