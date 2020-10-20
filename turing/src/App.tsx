@@ -40,6 +40,7 @@ const Tapes = observer(() => {
     );
     return (
         <ul className="tape-group" >
+            <h3 style={{paddingLeft: '45px', fontSize: '110%'}}>Tape</h3>
             {cont}
             <p style={{margin: '50px', border: 'none'}}>{'Current state: ' +
             state.states[state.machine[state.history_pos].state].name}</p>
@@ -67,11 +68,14 @@ const Controls = observer( () => {
     }, [])
 
     return (
-        <a><ul className='controls'>
-            <button onClick={handleTapeBack} disabled={!state.run_mode}>Back</button>
-            <button onClick={handleStep} disabled={!state.run_mode}>Step</button>
-        </ul>
+        <a>
             <ul className='controls'>
+                <p style={{fontSize: '110%'}}>Controls</p>
+                <button onClick={handleTapeBack} disabled={!state.run_mode}>Back</button>
+                <button onClick={handleStep} disabled={!state.run_mode}>Step</button>
+            </ul>
+            <ul className='controls'>
+                <p style={{fontSize: '110%'}}>Chose mode</p>
                 <button onClick={handleInputMode} style={{background: !state.run_mode ?
                         'rgb(200, 235, 200)' : '#ffdcdc', border: !state.run_mode ? '2px solid black' : 'none'}}
                 >Input mode</button>
@@ -135,6 +139,7 @@ const Symbols = observer(() => {
 
     return (
         <ul className="states-group"  >
+            <p style={{fontSize: '110%'}}>Symbols</p>
             <div>
                 <input className="state" value='Symbol' style={{width: '15%', background: '#D0D0D0'}}/>
                 <input type="text" className="a" value='Description' style={{width: '80%', background: '#D0D0D0'}}/>
@@ -205,6 +210,7 @@ const States = observer(() => {
 
     return (
         <ul className="states-group"  >
+            <p style={{fontSize: '110%'}}>States</p>
             <div>
                 <input className="state" value='State' style={{width: '15%', background: '#D0D0D0'}}
                        disabled={state.run_mode}/>
@@ -340,6 +346,7 @@ const Rules = observer(() => {
 
     return (
         <ul className="rules-group">
+            <p style={{fontSize: '110%'}}>Rules</p>
             {cont}
         </ul>
     );
@@ -413,6 +420,7 @@ const History = observer(() => {
     );
     return (
         <ul className="btn-group" style={{display: 'block'}} >
+            <p style={{fontSize: '110%'}}>History</p>
             {rows}
         </ul>
     );
@@ -457,7 +465,9 @@ const Programs = observer(() => {
     return (
         <ul className="mini-btn-group" style={{display: 'block'}} >
             <button style={{height: '40px', background: 'none', border: 'none'}}/>
+            <p style={{fontSize: '110%'}}>Programs</p>
             {cont}
+            <p style={{fontSize: '110%'}}>Save program</p>
             <input style={{marginTop: '0', marginBottom: '20px', fontStyle: state.possible_name ===
                 'Input name here' ? 'italic' : 'normal', color: state.possible_name === 'Input name here' ?
                     'gray' : 'black'}} value={state.possible_name}
@@ -481,7 +491,7 @@ const App = observer( () => {
         <div className="App">
             <LocalStateContext.Provider value={state}>
                 <div className='header'>
-                    <h3>
+                    <h3 style={{margin: '0'}}>
                         Turing machine
                     </h3>
                 </div>
@@ -500,6 +510,7 @@ const App = observer( () => {
                     </div>
                 </div>
                 <div className="table">
+                    <p style={{textAlign: 'left', paddingLeft: '30px', fontSize: '110%'}}>Rule table</p>
                     <Table/>
                 </div>
             </LocalStateContext.Provider>

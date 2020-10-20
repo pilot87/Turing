@@ -139,7 +139,7 @@ export class LocalState {
         } else {
             this.machine.push(mach.tapes);
             this.history_pos = 0;
-            this.run_mode = false;
+            this.run_mode = true;
         }
     }
 
@@ -462,6 +462,17 @@ export class LocalState {
         this.history_pos = 0;
         this.run_mode = false;
         this.programs = [];
+        this.possible_name = 'Default sample';
+        this.machineFromstart();
         this.possible_name = 'Input name here';
+        this.programs.push({name: 'Multiply (unary numeral system)', tapes: {tapes: [{tape: [0, 0, 0, 0, 0], pos: 2}], state: 0}
+        , rules: [{symbols: [1], state: 0, new_symbols: [1], new_state: 0, move: 'R'}],
+            states: [{name: 'Q0', description: 'Initial state'}, {name: 'Q1', description: ''},
+                {name: 'Q2', description: ''}, {name: 'Q3', description: ''}, {name: 'Q4', description: ''},
+                {name: 'Q5', description: ''}, {name: 'Q6', description: ''}, {name: 'Q7', description: ''},
+                {name: 'Q8', description: 'Terminate state'}],
+            symbols: [{name: '', description: 'Empty symbol'}, {name: '1', description: '1 in unary numeral system'},
+                {name: 'x', description: ''}, {name: '=', description: ''}, {name: 'a', description: ''},
+                {name: '*', description: ''}]})
     }
 }

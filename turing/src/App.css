@@ -144,8 +144,6 @@ p.simple {
 
 .states-group {
   border: none; /* Green border */
-  padding-top: 15px; /* Some padding */
-  padding-bottom: 15px;
   display: block; /* Make the buttons appear below each other */
   font-size: 16px;
   float: left;
