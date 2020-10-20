@@ -48,8 +48,8 @@ const Tapes = observer(() => {
             <p style={{marginLeft: '50px', marginBottom: '10px', border: 'none'}}>{'Current state: ' +
             state.states[state.machine[state.history_pos].state].name}</p>
             <p style={{marginLeft: '50px', marginTop: '0', border: 'none'}}>
-                <a>Current position:&nbsp;</a>
-                <input value={state.machine[0].tapes[0].pos} onChange={handleChangePos}/>
+                <a>Start position:&nbsp;</a>
+                <input value={state.machine[0].tapes[0].pos} onChange={handleChangePos} disabled={state.run_mode}/>
             </p>
         </ul>
     );
