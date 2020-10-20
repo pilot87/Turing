@@ -465,12 +465,43 @@ export class LocalState {
         this.possible_name = 'Default sample';
         this.machineFromstart();
         this.possible_name = 'Input name here';
-        this.programs.push({name: 'Multiply (unary numeral system)', tapes: {tapes: [{tape: [0, 0, 0, 0, 0], pos: 2}], state: 0}
-        , rules: [{symbols: [1], state: 0, new_symbols: [1], new_state: 0, move: 'R'}],
+        this.programs.push({name: 'Multiply (unary numeral system)',
+            tapes: {tapes: [{tape: [0, 0, 5, 1, 1, 1, 2, 1, 1, 3, 5, 0, 0], pos: 2}], state: 0}
+        , rules: [
+                {state: 0, symbols: [1], new_state: 0, new_symbols: [1], move: 'R'},
+                {state: 1, symbols: [1], new_state: 2, new_symbols: [4], move: 'R'},
+                {state: 2, symbols: [1], new_state: 2, new_symbols: [1], move: 'L'},
+                {state: 3, symbols: [1], new_state: 4, new_symbols: [4], move: 'R'},
+                {state: 4, symbols: [1], new_state: 4, new_symbols: [1], move: 'R'},
+                {state: 7, symbols: [1], new_state: 2, new_symbols: [4], move: 'R'},
+
+                {state: 0, symbols: [2], new_state: 1, new_symbols: [2], move: 'R'},
+                {state: 2, symbols: [2], new_state: 3, new_symbols: [2], move: 'L'},
+                {state: 4, symbols: [2], new_state: 4, new_symbols: [2], move: 'R'},
+                {state: 6, symbols: [2], new_state: 7, new_symbols: [2], move: 'R'},
+                {state: 8, symbols: [2], new_state: 9, new_symbols: [2], move: 'N'},
+
+                {state: 2, symbols: [3], new_state: 2, new_symbols: [3], move: 'L'},
+                {state: 4, symbols: [3], new_state: 4, new_symbols: [3], move: 'R'},
+                {state: 7, symbols: [3], new_state: 8, new_symbols: [3], move: 'L'},
+
+                {state: 2, symbols: [4], new_state: 2, new_symbols: [4], move: 'L'},
+                {state: 3, symbols: [4], new_state: 3, new_symbols: [4], move: 'L'},
+                {state: 4, symbols: [4], new_state: 4, new_symbols: [4], move: 'R'},
+                {state: 6, symbols: [4], new_state: 6, new_symbols: [1], move: 'R'},
+                {state: 7, symbols: [4], new_state: 7, new_symbols: [4], move: 'R'},
+                {state: 8, symbols: [4], new_state: 8, new_symbols: [1], move: 'L'},
+
+                {state: 0, symbols: [5], new_state: 0, new_symbols: [5], move: 'R'},
+                {state: 3, symbols: [5], new_state: 6, new_symbols: [5], move: 'R'},
+                {state: 4, symbols: [5], new_state: 5, new_symbols: [1], move: 'R'},
+
+                {state: 5, symbols: [0], new_state: 2, new_symbols: [5], move: 'L'}
+        ],
             states: [{name: 'Q0', description: 'Initial state'}, {name: 'Q1', description: ''},
                 {name: 'Q2', description: ''}, {name: 'Q3', description: ''}, {name: 'Q4', description: ''},
                 {name: 'Q5', description: ''}, {name: 'Q6', description: ''}, {name: 'Q7', description: ''},
-                {name: 'Q8', description: 'Terminate state'}],
+                {name: 'Q8', description: ''}, {name: 'Q9', description: 'Terminate state'}],
             symbols: [{name: '', description: 'Empty symbol'}, {name: '1', description: '1 in unary numeral system'},
                 {name: 'x', description: ''}, {name: '=', description: ''}, {name: 'a', description: ''},
                 {name: '*', description: ''}]})

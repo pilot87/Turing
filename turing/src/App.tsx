@@ -289,19 +289,12 @@ const OneRule = observer((props: {rule: Rule, index?: number}) => {
             )}
             <p style={{float: 'left'}}>
                 <a style={{color: '#585858', background: 'rgb(200, 235, 200)'}}>&nbsp;</a>
-                <a style={{color: '#585858', background: 'rgb(200, 235, 200)'}}>Move:&nbsp;</a>
-                <input type="text" style={{color: 'black', background: 'white', border: 'none'}}
-                       size={1} value={props.rule.move} onChange={handleRuleMoveChange}
-                       onFocus={handleRuleMoveFocus} disabled={state.run_mode}/>
-            </p>
-            <br/>
-            <p style={{float: 'left'}}>
-                <a style={{color: '#585858', background: 'rgb(200, 235, 200)'}}>&nbsp;</a>
                 <a style={{color: '#585858', background: 'rgb(200, 235, 200)'}}>New state:&nbsp;</a>
                 <input type="text" style={{color: 'black', background: 'white', border: 'none'}}
                        size={new_state_text.length + 1} value={new_state_text} onChange={handleRuleNew_StateChange}
                        disabled={state.run_mode}/>
             </p>
+            <br/>
             {props.rule.new_symbols.map(
                 (sym: number, tape: number) => {
                     return (
@@ -315,6 +308,13 @@ const OneRule = observer((props: {rule: Rule, index?: number}) => {
                     )
                 }
             )}
+            <p style={{float: 'left'}}>
+                <a style={{color: '#585858', background: 'rgb(200, 235, 200)'}}>&nbsp;</a>
+                <a style={{color: '#585858', background: 'rgb(200, 235, 200)'}}>Move:&nbsp;</a>
+                <input type="text" style={{color: 'black', background: 'white', border: 'none'}}
+                       size={1} value={props.rule.move} onChange={handleRuleMoveChange}
+                       onFocus={handleRuleMoveFocus} disabled={state.run_mode}/>
+            </p>
             <button style={{border: 'none', background: '#ffdcdc'}} onClick={handleRemoveRule}
                     disabled={state.run_mode}>Remove rule</button>
         </div>
