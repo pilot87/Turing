@@ -493,6 +493,9 @@ const App = observer( () => {
                 <div className='header'>
                     <h3 style={{margin: '0'}}>
                         Turing machine
+                        <a style={{fontSize: '70%', fontStyle: 'normal', textDecoration: 'none'}}
+                           href='https://github.com/pilot87/Turing'
+                           target="_blank">&nbsp;(see code on GitHub)</a>
                     </h3>
                 </div>
 
@@ -514,6 +517,9 @@ const App = observer( () => {
                     <Table/>
                 </div>
             </LocalStateContext.Provider>
+            <p className="simple">Alexey Kostylev aka Kernel Explorer</p>
+            <p className="simple">My Upwork profile: <a href="https://www.upwork.com/fl/kernelexplorer">Kernel
+                Explorer</a></p>
         </div>
     );
 });
