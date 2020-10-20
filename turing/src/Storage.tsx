@@ -57,8 +57,8 @@ export class LocalState {
     handleChangepos = (e: any) => {
         if (!isNaN(e.target.value)) {
             const pos: number = parseInt(e.target.value);
-            if (pos < this.machine[0].tapes[0].tape.length) {
-                this.machine[0].tapes[0].pos = pos
+            if (pos < this.machine[this.history_pos].tapes[0].tape.length) {
+                this.machine[this.history_pos].tapes[0].pos = pos
             }
         }
     }
