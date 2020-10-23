@@ -493,6 +493,7 @@ const App = observer( () => {
     const [state] = useState(() => new LocalState());
 
     useEffect(state.rulesEffect, []);
+    useEffect(state.loadAllProgs, []);
 
     return (
         <div className="App">
