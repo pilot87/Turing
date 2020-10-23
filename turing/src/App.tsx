@@ -480,9 +480,9 @@ const Programs = observer(() => {
                     'gray' : 'black'}} value={state.possible_name}
             onChange={handlePossible_Name} onFocus={cleanInput} onBlur={blurInput}/>
             <button style={{border: 'none', fontSize: '90%', padding: '2px', width: '100%', background: '#D0D0D0'}}
-                    onClick={machineFromStart}>Program from current state</button>
+                    onClick={machineFromActual}>Program from current state</button>
             <button style={{border: 'none', fontSize: '90%', padding: '2px', width: '100%', marginTop: '10px',
-                background: '#D0D0D0'}} onClick={machineFromActual}>Program from initial state</button>
+                background: '#D0D0D0'}} onClick={machineFromStart}>Program from initial state</button>
             <button style={{border: 'none', fontSize: '90%', padding: '2px', width: '100%', marginTop: '10px',
                 background: '#D0D0D0'}} onClick={sessionFromState}>Save current session</button>
         </ul>
