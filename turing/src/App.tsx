@@ -399,7 +399,7 @@ const Table = observer(() => {
     )
 })
 
-function Row(props: { index: number, active: boolean }) {
+const Row = observer((props: { index: number, active: boolean }) => {
     const state: LocalState = useContext(LocalStateContext);
     const handleTapeHistory = useCallback(() => {
         state.handleTapehistory(props.index);
@@ -410,7 +410,7 @@ function Row(props: { index: number, active: boolean }) {
             {'Step ' + props.index}
         </button>
     );
-}
+});
 
 const History = observer(() => {
     const state: LocalState = useContext(LocalStateContext);

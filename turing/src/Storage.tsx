@@ -76,6 +76,7 @@ export class LocalState {
             const pos: number = parseInt(e.target.value);
             if (pos < this.machine[this.history_pos].tapes[0].tape.length) {
                 this.machine[this.history_pos].tapes[0].pos = pos
+                while (this.align()) {}
             }
         }
     }
@@ -290,7 +291,7 @@ export class LocalState {
             } else if (rule.move === 'R') {
                 this.machine[this.history_pos].tapes[0].pos++;
             }
-            this.align();
+            while (this.align()) {}
         }
     }
 
@@ -301,11 +302,11 @@ export class LocalState {
     align = () => {
         let r: boolean = false;
         this.machine[this.history_pos].tapes = this.machine[this.history_pos].tapes.map( (bobbin: Tape) => {
-            if(bobbin.tape[0] === 0 && bobbin.tape[1] === 0 && bobbin.tape[2] === 0) {
+            if(bobbin.tape[0] === 0 && bobbin.tape[1] === 0 && bobbin.tape[2] === 0 && bobbin.pos > 2) {
                 bobbin.tape.shift();
                 bobbin.pos--;
                 r = true;
-            } else if(bobbin.tape[0] !== 0 || bobbin.tape[1] !== 0) {
+            } else if(bobbin.tape[0] !== 0 || bobbin.tape[1] !== 0 || bobbin.pos < 2) {
                 bobbin.tape.unshift(0);
                 bobbin.pos++;
                 r = true;
@@ -314,10 +315,11 @@ export class LocalState {
         })
         this.machine[this.history_pos].tapes = this.machine[this.history_pos].tapes.map( (bobbin: Tape) => {
             if(bobbin.tape[bobbin.tape.length - 3] === 0 && bobbin.tape[bobbin.tape.length - 2] === 0 &&
-                bobbin.tape[bobbin.tape.length - 1] === 0) {
+                bobbin.tape[bobbin.tape.length - 1] === 0 && bobbin.pos < bobbin.tape.length - 3) {
                 bobbin.tape.pop();
                 r = true;
-            } else if(bobbin.tape[bobbin.tape.length - 2] !== 0 || bobbin.tape[bobbin.tape.length - 1] !== 0) {
+            } else if(bobbin.tape[bobbin.tape.length - 2] !== 0 || bobbin.tape[bobbin.tape.length - 1] !== 0 ||
+            bobbin.pos > bobbin.tape.length - 3) {
                 bobbin.tape.push(0);
                 r = true;
             }
