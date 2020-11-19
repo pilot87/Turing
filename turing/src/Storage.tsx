@@ -57,7 +57,7 @@ export class LocalState {
 
     loadAllProgs = () => {
         const { programs } = this;
-        axios.post('https://kernelexplorer.space/turing/loadprogs')
+        axios.post('https://kernelexplorer.site/turing/loadprogs')
         .then(async (response: any) => {
             //JSON.parse(response.data).forEach((new_prog: Program) => {
             response.data.forEach((new_prog: Program) => {
